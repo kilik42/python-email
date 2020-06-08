@@ -7,7 +7,7 @@ username =  'something@gmail.com'
 password = 'letsget it started 2020'
 
 def send_mail(text='Email body', subject='hello world',
-              from_email='something@gmail.com',to_emails=None):
+              from_email='something@gmail.com',to_emails=None, html = None):
     assert isinstance(to_emails, list)
 
     msg = MIMEMultipart('alternative')
@@ -15,17 +15,14 @@ def send_mail(text='Email body', subject='hello world',
     msg['To'] = ", ".join(to_emails)
     msg['Subject'] = subject
 
-
     txt_part = MIMEText(text, 'plain')
 
+    if html != None:
+        html_part = MIMEText("<h1>this is working</h1>", 'html')
+        msg.attach(html_part)
 
 
-    msg.attach(txt_part)
-
-
-
-    html_part = MIMEText("<h1>this is working</h1>", 'html')
-    msg_str = ""
+    msg_str = msg.as_string()
     # log in into smtp server
     server = smtplib.SMTP(host= 'smtp.gmail.com', port = 587)
     server.ehlo()
